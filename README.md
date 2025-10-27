@@ -34,35 +34,19 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 
 ---
 
+# 🚀 How to Run Locally
 
-## 🚀 How to Run Locally
+Follow these instructions to get a copy of the project running on your local machine.
 
-Follow these simple steps to set up and run the project on your local machine:
+---
 
-### 1️⃣ Clone the repository
+### 1️⃣ Clone the repository:
+
 ```bash
 git clone https://github.com/maryan-dev/hamiskills-internship-flutter-project.git
 
-### 1️⃣ Clone the repository
-```bash
-
-flutter pub get
-
-
-### 4️⃣ Run the app
-```bash
-
-flutter run
-
-
-### 👤 Author
-```bash
-
-
-GitHub: @maryan-dev
-
-Project: Part of HamiSkills Internship – Flutter Development Track 💚
-
-
+###2️⃣ Navigate to the project directory:
+cd deliverbles_app
+3️⃣ Install dependencies
 
 
