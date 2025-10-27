@@ -25,7 +25,29 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 | <img src="https://github.com/user-attachments/assets/fff3ed82-efc9-43c3-9388-ed4db6710dda" width="250"/> | <img src="https://github.com/user-attachments/assets/c92dc7b9-1312-4aa7-ac11-9b3999c8651e" width="250"/> | <img src="https://github.com/user-attachments/assets/fe0b96f0-49f4-4f51-8435-848e3013897d" width="250"/> |
 
 
+## 💻 Tech Stack
 
+- **Framework:** Flutter  
+- **Language:** Dart  
+- **State Management:** `setState`  
+- **Navigation:** `Navigator.push()` & `Navigator.pop()`  
+- **Data Source:** Hardcoded dummy data (list of products)
+
+---
+
+## 🚀 How to Run Locally
+
+Follow these simple steps to set up and run the project on your local machine:
+
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/maryan-dev/hamiskills-internship-flutter-project.git
+
+👤 Author
+
+GitHub: @maryan-dev
+
+Project by: HamiSkills Internship – Flutter Development Track 💚
 
 
 
