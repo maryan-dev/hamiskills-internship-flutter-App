@@ -18,7 +18,7 @@ class Product {
 final List<Product> dummyProducts = [
   Product(
     id: '1',
-    name: 'Fresh Apples',
+    name: 'Fresh Apples(2kg)',
     price: 2.99,
     image: '🍎',
     description: 'Crisp and sweet red apples, perfect for a healthy snack.',

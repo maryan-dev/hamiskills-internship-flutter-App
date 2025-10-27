@@ -1,6 +1,7 @@
 // lib/screens/splash_screen.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'MainWrapper.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      const Duration(seconds:5),
+      const Duration(seconds: 5),
       () => Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainWrapper()),
       ),
@@ -25,17 +26,25 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0XFF0a032c),
+      backgroundColor: const Color(0XFF0a032c),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Use your logo from assets
-            Image.asset('assets/logo-removebg-preview.png', width: 150),
-            const SizedBox(height: 20),
-            const Text(
+            // Use your logo from assets - responsive size
+            Image.asset(
+              'assets/logo-removebg-preview.png',
+              width: 150.w,
+              height: 150.w,
+            ),
+            SizedBox(height: 20.h),
+            Text(
               "Hami MiniMarket",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),
+              style: TextStyle(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
           ],
         ),
