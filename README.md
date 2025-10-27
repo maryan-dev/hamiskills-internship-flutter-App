@@ -58,19 +58,10 @@ flutter pub get
 
 ```
 4️⃣ Run the app:
-```bash
+``bash
 
 flutter run
-```
-👤 Author
+
+###👤 Author
 ```bash
-
-
 GitHub: @maryan-dev
-
-
-
-
-
-
-
