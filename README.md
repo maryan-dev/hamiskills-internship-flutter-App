@@ -7,11 +7,25 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 
 ✨ Features
 📱 Splash Screen: App loading screen with the Hami MiniMarket logo. 🏠 Home Screen: A welcoming landing page with a welcome message. 🍎 Product List: Displays all available fruits and vegetables with their name, price, and image. ℹ️ Product Details: A detailed view for each product, showing a description and an "Add to Cart" button. 🛒 Shopping Cart: A functional cart that lists selected items and calculates the total price. 🧭 Bottom Navigation: (Bonus) Easy navigation between Home, Products, and Cart screens. ⚙️ State Management: (Bonus) Uses setState to dynamically update the cart in real-time.
+
 ## 📱 Screenshots
 
 | Splash | Home | Products |
-|:------:|:----:|:--------:|
-<img width="1080" height="2280" alt="Splash" src="https://github.com/user-attachments/assets/630e9f48-bac4-4c98-af12-d9edba4225fa" />
-<img width="1080" height="2280" alt="Screenshot_1761397494" src="https://github.com/user-attachments/assets/2eec7948-c546-464b-8739-b47f76b45696" />
-<img width="1080" height="2280" alt="Screenshot_1761397500" src="https://github.com/user-attachments/assets/7bd1cb71-5858-481f-8cf7-6b670d28e17d" />
-<img width="1080" height="2280" alt="Screenshot_1761397569" src="https://github.com/user-attachments/assets/e6ab328c-5a54-4462-9bd6-d2d036d5264a" />
+|--------|------|-----------|
+| <img src="https://github.com/user-attachments/assets/812a5e6a-86b7-4ac4-8dda-375ad8fb28dd" width="250"/> | <img src="https://github.com/user-attachments/assets/e92d7da8-2c2e-4604-b6c7-348dc3172560" width="250"/> | <img src="https://github.com/user-attachments/assets/3f1ca023-8433-40cf-a9cf-0d670f942c75" width="250"/> |
+
+| Details | Cart (Empty) | Cart (Full) |
+|----------|--------------|-------------|
+| <img src="https://github.com/user-attachments/assets/b2df932a-8352-4499-9f37-798c574c6e81" width="250"/> | <img src="https://github.com/user-attachments/assets/12b4445d-c1f5-4b4c-ac58-29c2e2656e4b" width="250"/> | <img src="https://github.com/user-attachments/assets/fff3ed82-efc9-43c3-9388-ed4db6710dda" width="250"/> |
+
+| Checkout | Confirmation | Validation |
+|-----------|---------------|------------|
+| <img src="https://github.com/user-attachments/assets/1877a886-ecad-4f37-b78e-b2fca4152e9e" width="250"/> | <img src="https://github.com/user-attachments/assets/c92dc7b9-1312-4aa7-ac11-9b3999c8651e" width="250"/> | <img src="https://github.com/user-attachments/assets/9
+
+
+
+
+
+
+
+
