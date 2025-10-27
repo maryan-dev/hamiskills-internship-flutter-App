@@ -1,4 +1,4 @@
-#Hami MiniMarket - Flutter Prototype
+ #Hami MiniMarket - Flutter Prototype
 
 Hami MiniMarket - Flutter Prototype
 This project is the Week 1 submission for the HamiSkills Internship - Flutter Development Track.
@@ -54,22 +54,22 @@ cd hamiskills-internship-flutter-project
 
 3️⃣ Install dependencies:
 ```bash
-
 flutter pub get
 
 ```
 4️⃣ Run the app:
 ```bash
 flutter run
-
-
+```
 
 ---
 ## 👤 Author
 
 - **GitHub:** [@maryan-dev](https://github.com/maryan-dev)
----
 
+
+
+---
 
 
 
