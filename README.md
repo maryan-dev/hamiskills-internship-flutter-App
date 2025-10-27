@@ -28,9 +28,8 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 
 - **Framework:** Flutter  
 - **Language:** Dart  
-- **State Management:** `setState`  
+- **State Management:** `setState,provider`  
 - **Navigation:** `Navigator.push()` & `Navigator.pop()`  
-- **Data Source:** Hardcoded dummy data (list of products)
 
 ---
 ## 🚀 How to Run Locally
@@ -62,6 +61,13 @@ flutter pub get
 
 flutter run
 
-###👤 Author
-```bash
+---
+## 👤 Author
+
 GitHub: @maryan-dev
+
+---
+
+
+
+
