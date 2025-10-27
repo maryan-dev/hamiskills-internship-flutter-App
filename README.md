@@ -43,9 +43,8 @@ Follow these simple steps to set up and run the project on your local machine:
 ```bash
 git clone https://github.com/maryan-dev/hamiskills-internship-flutter-project.git
 
-## 👤 Author
-
-- **GitHub:** [@maryan-dev](https://github.com/maryan-dev)
+👤 Author
+GitHub: @maryan-dev
 
 
 
