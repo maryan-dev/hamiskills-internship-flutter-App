@@ -22,7 +22,7 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 
 | Validation | Checkout | Confirmation |
 |-------------|-----------|---------------|
-| <img src="https://github.com/user-attachments/assets/fff3ed82-efc9-43c3-9388-ed4db6710dda" width="250"/> | <img src="https://github.com/user-attachments/assets/fe0b96f0-49f4-4f51-8435-848e3013897d" width="250"/> | <img src="https://github.com/user-attachments/assets/c92dc7b9-1312-4aa7-ac11-9b3999c8651e" width="250"/> |
+| <img src="https://github.com/user-attachments/assets/fff3ed82-efc9-43c3-9388-ed4db6710dda" width="250"/> | <img src="https://github.com/user-attachments/assets/c92dc7b9-1312-4aa7-ac11-9b3999c8651e" width="250"/> | <img src="https://github.com/user-attachments/assets/fe0b96f0-49f4-4f51-8435-848e3013897d" width="250"/> |
 
 
 
