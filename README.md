@@ -13,7 +13,8 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 
 | Splash | Home | Products |
 |--------|------|-----------|
-| <img src="https://github.com/user-attachments/assets/812a5e6a-86b7-4ac4-8dda-375ad8fb28dd" width="250"/> | <img src="https://github.com/user-attachments/assets/e92d7da8-2c2e-4604-b6c7-348dc3172560" width="250"/> | <img src="https://github.com/user-attachments/assets/3f1ca023-8433-40cf-a9cf-0d670f942c75" width="250"/> |
+| <img src="https://github.com/user-attachments/assets/812a5e6a-86b7-4ac4-8dda-375ad8fb28dd" width="250"/> | <img src="https://github.com/user-attachments/assets/e92d7da8-2c2e-4604-b6c7-348dc3172560" width="250"/> |<img width="1080" height="2280" alt="Screenshot_1761640196" src="https://github.com/user-attachments/assets/db15377e-cbc6-4cb1-96ae-dcee5da30721" />
+ |
 
 | Details | Cart (Empty) | Cart (Full) |
 |----------|--------------|-------------|
