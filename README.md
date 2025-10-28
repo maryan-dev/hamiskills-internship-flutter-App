@@ -9,11 +9,12 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 📱 Splash Screen: App loading screen with the Hami MiniMarket logo. 🏠 Home Screen: A welcoming landing page with a welcome message. 🍎 Product List: Displays all available fruits and vegetables with their name, price, and image. ℹ️ Product Details: A detailed view for each product, showing a description and an "Add to Cart" button. 🛒 Shopping Cart: A functional cart that lists selected items and calculates the total price. 🧭 Bottom Navigation: (Bonus) Easy navigation between Home, Products, and Cart screens. ⚙️ State Management: (Bonus) Uses setState to dynamically update the cart in real-time.
 
 
-## 📱 Screenshots
+## 📱 App Screens
 
 | Splash | Home | Products |
 |--------|------|-----------|
-| <img src="https://github.com/user-attachments/assets/812a5e6a-86b7-4ac4-8dda-375ad8fb28dd" width="250"/> | <img src="https://github.com/user-attachments/assets/e92d7da8-2c2e-4604-b6c7-348dc3172560" width="250"/>|<img width="1080" height="2280" alt="SCRENRWO" src="https://github.com/user-attachments/assets/638471b7-14d9-45b4-9b3f-c8afce5849a5" />|
+| <img src="https://github.com/user-attachments/assets/812a5e6a-86b7-4ac4-8dda-375ad8fb28dd" width="250"/> | <img src="https://github.com/user-attachments/assets/e92d7da8-2c2e-4604-b6c7-348dc3172560" width="250"/> | <img src="https://github.com/user-attachments/assets/638471b7-14d9-45b4-9b3f-c8afce5849a5" width="250"/> |
+
 | Details | Cart (Empty) | Cart (Full) |
 |----------|--------------|-------------|
 | <img src="https://github.com/user-attachments/assets/b2df932a-8352-4499-9f37-798c574c6e81" width="250"/> | <img src="https://github.com/user-attachments/assets/a8c6512b-6f2d-4325-bc89-97b579b57c80" width="250"/> | <img src="https://github.com/user-attachments/assets/7579a259-b817-4264-a9bb-4a2748c7c372" width="250"/> |
