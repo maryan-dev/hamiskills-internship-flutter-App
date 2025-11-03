@@ -11,23 +11,44 @@ class CartProvider with ChangeNotifier {
 
   int get itemCount => _items.length;
 
-  double get totalAmount {
+  double get subtotal {
     return _items.fold(0.0, (sum, item) => sum + item.totalPrice);
+  }
+
+  double get taxRate => 0.05; // 5% tax
+
+  double get tax {
+    return subtotal * taxRate;
+  }
+
+  double get discount {
+    if (subtotal > 50) {
+      return subtotal * 0.10; // 10% discount if total > $50
+    }
+    return 0.0;
+  }
+
+  double get discountRate {
+    if (subtotal > 50) {
+      return 0.10; // 10% discount
+    }
+    return 0.0;
+  }
+
+  double get totalAmount {
+    return subtotal + tax - discount;
   }
 
   int get totalItems {
     return _items.fold(0, (sum, item) => sum + item.quantity);
   }
 
-  // Add product to cart
   void addItem(Product product) {
     final existingIndex = _items.indexWhere((item) => item.product.id == product.id);
     
     if (existingIndex >= 0) {
-      // Product already in cart, increase quantity
       _items[existingIndex].quantity++;
     } else {
-      // Add new product to cart
       _items.add(CartItem(product: product, quantity: 1));
     }
     
@@ -66,12 +87,7 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  // Clear all items
-  void clearCart() {
-    _items.clear();
-    notifyListeners();
-    _saveCart();
-  }
+  // Clear all items (this method is now overridden below)
 
   // Save cart to SharedPreferences
   Future<void> _saveCart() async {
@@ -94,6 +110,54 @@ class CartProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // Track sales data for dashboard (call this when order is confirmed)
+  Future<void> saveSalesData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final currentSales = prefs.getDouble('total_sales') ?? 0.0;
+    await prefs.setDouble('total_sales', currentSales + totalAmount);
+    
+    // Track most added items
+    for (var item in _items) {
+      final key = 'product_${item.product.id}_count';
+      final currentCount = prefs.getInt(key) ?? 0;
+      await prefs.setInt(key, currentCount + item.quantity);
+    }
+  }
+
+  // Get total sales
+  Future<double> getTotalSales() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble('total_sales') ?? 0.0;
+  }
+
+  // Get product count
+  Future<int> getProductCount(String productId) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('product_${productId}_count') ?? 0;
+  }
+
+  // Clear sales data (for testing/reset)
+  Future<void> clearSalesData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('total_sales');
+    final keys = prefs.getKeys();
+    for (var key in keys) {
+      if (key.startsWith('product_') && key.endsWith('_count')) {
+        await prefs.remove(key);
+      }
+    }
+  }
+
+  // Clear all items
+  void clearCart() {
+    _items.clear();
+    notifyListeners();
+    _saveCart();
+  }
 }
+
+
+
 
 

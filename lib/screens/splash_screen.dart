@@ -1,4 +1,3 @@
-// lib/screens/splash_screen.dart
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      const Duration(seconds: 5),
+      const Duration(seconds: 6),
       () => Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainWrapper()),
       ),
@@ -31,7 +30,6 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Use your logo from assets - responsive size
             Image.asset(
               'assets/logo-removebg-preview.png',
               width: 150.w,

@@ -5,6 +5,7 @@ import 'home_screen.dart';
 import 'product_list_screen.dart';
 import 'product_details_screen.dart';
 import 'cart_screen.dart';
+import 'dashboard_screen.dart';
 import '../model/product_model.dart';
 import '../providers/cart_provider.dart';
 
@@ -41,6 +42,7 @@ class _MainWrapperState extends State<MainWrapper> {
       const HomeScreen(),
       ProductListScreen(onProductTap: _navigateToProductDetails),
       const CartScreen(),
+      const DashboardScreen(),
     ];
 
     return Scaffold(
@@ -52,7 +54,7 @@ class _MainWrapperState extends State<MainWrapper> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: const Color.fromARGB(255, 245, 245, 245),
         unselectedItemColor: Colors.white,
-        backgroundColor: const Color.fromARGB(255, 33, 48, 70),
+        backgroundColor: const Color.fromARGB(255, 37, 45, 59),
         iconSize: 30.sp,
         selectedLabelStyle: TextStyle(
           fontSize: 16.sp,
@@ -82,6 +84,10 @@ class _MainWrapperState extends State<MainWrapper> {
               ),
             ),
             label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard, size: 28.sp),
+            label: 'Dashboard',
           ),
         ],
       ),

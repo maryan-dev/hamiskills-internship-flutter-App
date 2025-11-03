@@ -11,6 +11,9 @@ class OrderConfirmationScreen extends StatelessWidget {
   final String phone;
   final String address;
   final List<CartItem> cartItems;
+  final double subtotal;
+  final double tax;
+  final double discount;
   final double totalAmount;
 
   const OrderConfirmationScreen({
@@ -19,6 +22,9 @@ class OrderConfirmationScreen extends StatelessWidget {
     required this.phone,
     required this.address,
     required this.cartItems,
+    required this.subtotal,
+    required this.tax,
+    required this.discount,
     required this.totalAmount,
   });
 
@@ -34,17 +40,18 @@ class OrderConfirmationScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 22.sp),
         ),
       ),
-      body: Center(
+      body: SafeArea(
+        bottom: true,
+        child: Center(
         child: Container(
           constraints: BoxConstraints(
             maxWidth: ResponsiveHelper.getMaxWidth(context),
           ),
           child: SingleChildScrollView(
-            padding: ResponsiveHelper.getScreenPadding(context),
+            padding: ResponsiveHelper.getScreenPadding(context).add(EdgeInsets.only(bottom: 16.h)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Success Icon
                 Container(
                   padding: EdgeInsets.all(20.w),
                   decoration: BoxDecoration(
@@ -54,12 +61,11 @@ class OrderConfirmationScreen extends StatelessWidget {
                   child: Icon(
                     Icons.check_circle,
                     color: Colors.green,
-                    size: 100.sp,
+                    size: 80.sp,
                   ),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 20.h),
 
-                // Thank You Message
                 Text(
                   'Thank You!',
                   style: TextStyle(
@@ -79,7 +85,6 @@ class OrderConfirmationScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 30.h),
 
-                // Delivery Information Card
                 Card(
                   color: const Color.fromARGB(255, 37, 53, 76),
                   shape: RoundedRectangleBorder(
@@ -110,7 +115,6 @@ class OrderConfirmationScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
 
-                // Order Summary Card
                 Card(
                   color: const Color.fromARGB(255, 37, 53, 76),
                   shape: RoundedRectangleBorder(
@@ -155,12 +159,79 @@ class OrderConfirmationScreen extends StatelessWidget {
                                 ],
                               ),
                             )),
-                        Divider(color: Colors.white30, height: 30.h),
+                        Divider(color: Colors.white30, height: 20.h),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Total Amount',
+                              'Subtotal:',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.white70,
+                              ),
+                            ),
+                            Text(
+                              '\$${subtotal.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 8.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Tax (5%):',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.white70,
+                              ),
+                            ),
+                            Text(
+                              '\$${tax.toStringAsFixed(2)}',
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (discount > 0) ...[
+                          SizedBox(height: 8.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Discount (10%):',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              Text(
+                                '-\$${discount.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                        SizedBox(height: 10.h),
+                        Divider(color: Colors.white30, height: 20.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total Amount:',
                               style: TextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.bold,
@@ -181,9 +252,8 @@ class OrderConfirmationScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 26.h),
 
-                // Expected Delivery Info
                 Container(
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
@@ -208,7 +278,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Within 24-48 hours',
+                              'Within 1-2 hours',
                               style: TextStyle(
                                 fontSize: 14.sp,
                                 color: Colors.white.withOpacity(0.7),
@@ -220,17 +290,14 @@ class OrderConfirmationScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height:20.h),
 
-                // Continue Shopping Button
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Clear the cart
                       Provider.of<CartProvider>(context, listen: false).clearCart();
                       
-                      // Navigate to home and remove all previous routes
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(builder: (context) => const MainWrapper()),
@@ -239,7 +306,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0XFF192441),
-                      padding: EdgeInsets.symmetric(vertical: 16.h),
+                      padding: EdgeInsets.symmetric(vertical: 16.h, horizontal: 24.w),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.r),
                       ),
@@ -248,7 +315,7 @@ class OrderConfirmationScreen extends StatelessWidget {
                       'Continue Shopping',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.sp,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -257,6 +324,7 @@ class OrderConfirmationScreen extends StatelessWidget {
               ],
             ),
           ),
+        ),
         ),
       ),
     );

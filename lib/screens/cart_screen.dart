@@ -14,23 +14,28 @@ class CartScreen extends StatelessWidget {
       builder: (context, cartProvider, child) {
         return Scaffold(
           backgroundColor: const Color(0XFF0a032c),
-          appBar: AppBar(
-            backgroundColor: const Color(0XFF0a032c),
-            title: Text(
-              'My Cart',
-              style: TextStyle(color: Colors.white, fontSize: 22.sp),
+      appBar: AppBar(
+        backgroundColor: const Color(0XFF0a032c),
+        title: Text(
+          'My Cart',
+          style: TextStyle(color: Colors.white, fontSize: 22.sp),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
+              size: 26.sp,
             ),
-            actions: [
-              if (cartProvider.itemCount > 0)
-                IconButton(
-                  icon: Icon(Icons.delete_sweep, color: Colors.red, size: 28.sp),
-                  tooltip: 'Clear Cart',
-                  onPressed: () {
+            onPressed: cartProvider.itemCount == 0
+                ? null
+                : () {
                     _showClearCartDialog(context, cartProvider);
                   },
-                ),
-            ],
+            tooltip: 'Clear Cart',
           ),
+        ],
+      ),
           body: Center(
             child: Container(
               constraints: BoxConstraints(
@@ -68,7 +73,6 @@ class CartScreen extends StatelessWidget {
                     )
                   : Column(
                       children: [
-                        // Cart Items List
                         Expanded(
                           child: ListView.builder(
                             padding: ResponsiveHelper.getScreenPadding(context),
@@ -85,7 +89,6 @@ class CartScreen extends StatelessWidget {
                                   padding: EdgeInsets.all(12.w),
                                   child: Row(
                                     children: [
-                                      // Product Image
                                       Container(
                                         width: 70.w,
                                         height: 70.w,
@@ -102,7 +105,6 @@ class CartScreen extends StatelessWidget {
                                       ),
                                       SizedBox(width: 12.w),
 
-                                      // Product Details
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,7 +138,6 @@ class CartScreen extends StatelessWidget {
                                         ),
                                       ),
 
-                                      // Quantity Controls
                                       Column(
                                         children: [
                                           Container(
@@ -218,7 +219,6 @@ class CartScreen extends StatelessWidget {
                           ),
                         ),
 
-                        // Total and Checkout Section
                         Container(
                           padding: EdgeInsets.all(20.w),
                           decoration: BoxDecoration(
@@ -233,7 +233,6 @@ class CartScreen extends StatelessWidget {
                           ),
                           child: Column(
                             children: [
-                              // Total Items
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -255,7 +254,6 @@ class CartScreen extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 10.h),
-                              // Total Amount
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -267,7 +265,7 @@ class CartScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    '\$${cartProvider.totalAmount.toStringAsFixed(2)}',
+                                    '\$${cartProvider.subtotal.toStringAsFixed(2)}',
                                     style: TextStyle(
                                       fontSize: 24.sp,
                                       fontWeight: FontWeight.bold,
@@ -277,7 +275,6 @@ class CartScreen extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 16.h),
-                              // Proceed to Checkout Button
                               SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(

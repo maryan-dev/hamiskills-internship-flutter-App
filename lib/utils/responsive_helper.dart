@@ -1,21 +1,19 @@
+
 import 'package:flutter/material.dart';
 
 class ResponsiveHelper {
   static double getResponsiveFontSize(BuildContext context, double size) {
     double screenWidth = MediaQuery.of(context).size.width;
-    // Base width is 375 (iPhone SE/standard mobile)
     return size * (screenWidth / 375);
   }
 
   static double getResponsiveHeight(BuildContext context, double height) {
     double screenHeight = MediaQuery.of(context).size.height;
-    // Base height is 812
     return height * (screenHeight / 812);
   }
 
   static double getResponsiveWidth(BuildContext context, double width) {
     double screenWidth = MediaQuery.of(context).size.width;
-    // Base width is 375
     return width * (screenWidth / 375);
   }
 
@@ -34,9 +32,9 @@ class ResponsiveHelper {
 
   static int getGridCrossAxisCount(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    if (width >= 1024) return 4; // Desktop
-    if (width >= 600) return 3;  // Tablet
-    return 2; // Mobile
+    if (width >= 1024) return 4; 
+    if (width >= 600) return 3;  
+    return 2; 
   }
 
   static double getGridChildAspectRatio(BuildContext context) {
@@ -65,5 +63,3 @@ class ResponsiveHelper {
     return double.infinity;
   }
 }
-
-

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
 import '../utils/responsive_helper.dart';
 import 'order_confirmation_screen.dart';
+import 'cart_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
@@ -59,20 +60,87 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return null;
   }
 
-  void _proceedToConfirmation() {
+  void _proceedToConfirmation() async {
     if (_formKey.currentState!.validate()) {
       final cartProvider = Provider.of<CartProvider>(context, listen: false);
       
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OrderConfirmationScreen(
-            name: _nameController.text,
-            phone: _phoneController.text,
-            address: _addressController.text,
-            cartItems: cartProvider.items,
-            totalAmount: cartProvider.totalAmount,
+      // Save sales data before showing confirmation
+      await cartProvider.saveSalesData();
+      
+      // Show success dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => AlertDialog(
+          backgroundColor: const Color.fromARGB(255, 37, 53, 76),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.r),
           ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_circle,
+                color: Colors.green,
+                size: 80.sp,
+              ),
+              SizedBox(height: 20.h),
+              Text(
+                'Order Confirmed!',
+                style: TextStyle(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 10.h),
+              Text(
+                'Your order has been placed successfully',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.white70,
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context); // Close dialog
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OrderConfirmationScreen(
+                      name: _nameController.text,
+                      phone: _phoneController.text,
+                      address: _addressController.text,
+                      cartItems: cartProvider.items,
+                      subtotal: cartProvider.subtotal,
+                      tax: cartProvider.tax,
+                      discount: cartProvider.discount,
+                      totalAmount: cartProvider.totalAmount,
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+              ),
+              child: Text(
+                'View Details',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
         ),
       );
     }
@@ -94,6 +162,48 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           'Checkout',
           style: TextStyle(color: Colors.white, fontSize: 22.sp),
         ),
+        actions: [
+          Consumer<CartProvider>(
+            builder: (context, cart, child) => Stack(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.shopping_cart, color: Colors.white, size: 28.sp),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CartScreen()),
+                    );
+                  },
+                ),
+                if (cart.totalItems > 0)
+                  Positioned(
+                    right: 8.w,
+                    top: 8.h,
+                    child: Container(
+                      padding: EdgeInsets.all(4.w),
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 18.w,
+                        minHeight: 18.h,
+                      ),
+                      child: Text(
+                        '${cart.totalItems}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Container(
@@ -126,21 +236,120 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 10.h),
+                          SizedBox(height: 15.h),
+                          // Itemized List
+                          ...cartProvider.items.map((item) => Padding(
+                            padding: EdgeInsets.only(bottom: 8.h),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    '${item.product.image} ${item.product.name} x${item.quantity}',
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  '\$${item.totalPrice.toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )),
+                          Divider(color: Colors.white30, height: 20.h),
+                          // Subtotal
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Total Items: ${cartProvider.totalItems}',
+                                'Subtotal:',
                                 style: TextStyle(
                                   fontSize: 16.sp,
                                   color: Colors.white70,
                                 ),
                               ),
                               Text(
-                                '\$${cartProvider.totalAmount.toStringAsFixed(2)}',
+                                '\$${cartProvider.subtotal.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 8.h),
+                          // Tax
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Tax (${(cartProvider.taxRate * 100).toStringAsFixed(0)}%):',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.white70,
+                                ),
+                              ),
+                              Text(
+                                '\$${cartProvider.tax.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
+                          ),
+                          // Discount (if applicable)
+                          if (cartProvider.discount > 0) ...[
+                            SizedBox(height: 8.h),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Discount (${(cartProvider.discountRate * 100).toStringAsFixed(0)}%):',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                Text(
+                                  '-\$${cartProvider.discount.toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                          SizedBox(height: 10.h),
+                          Divider(color: Colors.white30, height: 20.h),
+                          // Final Total
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Total:',
                                 style: TextStyle(
                                   fontSize: 20.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                '\$${cartProvider.totalAmount.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 22.sp,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.green,
                                 ),
@@ -153,7 +362,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   SizedBox(height: 30.h),
 
-                  // Delivery Information Form
                   Text(
                     'Delivery Information',
                     style: TextStyle(
@@ -162,7 +370,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 10.h),
 
                   // Name Field
                   TextFormField(
@@ -225,7 +433,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       alignLabelWithHint: true,
                     ),
                   ),
-                  SizedBox(height: 30.h),
+                  SizedBox(height: 20.h),
 
                   // Confirm Order Button
                   SizedBox(
@@ -234,7 +442,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       onPressed: _proceedToConfirmation,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0XFF192441),
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
+                        padding: EdgeInsets.symmetric(vertical: 14.h),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
                         ),

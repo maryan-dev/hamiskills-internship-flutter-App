@@ -39,6 +39,10 @@ dependencies:
   flutter_screenutil: ^5.9.0
   flutter_launcher_icons: ^0.13.1
   
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/logo.png"
 
 
 dev_dependencies:
