@@ -24,13 +24,13 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 |-------------|----------------|--------------------|
 | <img src="https://github.com/user-attachments/assets/eb3cdec3-cc6e-4a97-b6cc-5fad33dab949" width="250"/> | <img src="https://github.com/user-attachments/assets/3c5b8d45-279a-4e61-94d9-e072be6ee884" width="250"/> | <img src="https://github.com/user-attachments/assets/acfc4aa0-63d7-4f00-9ce0-4d804d7973b9" width="250"/> |
 
-| Add Complete Confirmation | Complete Confirmation | Dashboard (Sales) |
-|----------------------------|-----------------------|-------------------|
-| <img width="250" src="https://github.com/user-attachments/assets/3623d97e-8350-4c69-81a9-90301daa697f" /> | <img width="250" src="https://github.com/user-attachments/assets/b09e1376-ca39-4bc6-86f8-a3a6e9ca66ae" /> | <img width="250" src="https://github.com/user-attachments/assets/73e45bad-e43d-4cf1-b470-df6a4436cc8c" /> |
+| Add Complete Confirmation | Complete Confirmation || Dashboard (Sales Empty) |
+|----------------------------|-----------------------|-----------------------|
+| <img width="250" src="https://github.com/user-attachments/assets/3623d97e-8350-4c69-81a9-90301daa697f" /> | <img width="250" src="https://github.com/user-attachments/assets/b09e1376-ca39-4bc6-86f8-a3a6e9ca66ae" /> | <img width="250" src="https://github.com/user-attachments/assets/5de5a733-7264-4b38-8989-be3cdcc05acc" /> |
 
-| Dashboard (Sales Empty) | Dashboard (Sales - Filled) | Dashboard (Sales - Overview) |
-|--------------------------|-----------------------------|------------------------------|
-| <img width="250" src="https://github.com/user-attachments/assets/5de5a733-7264-4b38-8989-be3cdcc05acc" /> | <img width="250" src="https://github.com/user-attachments/assets/73e45bad-e43d-4cf1-b470-df6a4436cc8c" /> | <img width="250" src="https://github.com/user-attachments/assets/b09e1376-ca39-4bc6-86f8-a3a6e9ca66ae" /> |
+| Dashboard (Sales - Filled) |
+|--------------------------|
+| <img width="250" src="https://github.com/user-attachments/assets/5de5a733-7264-4b38-8989-be3cdcc05acc" /> | <img width="250" src="https://github.com/user-attachments/assets/73e45bad-e43d-4cf1-b470-df6a4436cc8c" /> |
 
 ## 💻 Tech Stack
 
