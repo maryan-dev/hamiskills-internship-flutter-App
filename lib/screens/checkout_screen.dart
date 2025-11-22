@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/auth_provider.dart';
 import '../utils/responsive_helper.dart';
 import 'order_confirmation_screen.dart';
 import 'cart_screen.dart';
@@ -63,11 +64,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   void _proceedToConfirmation() async {
     if (_formKey.currentState!.validate()) {
       final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       
-      // Save sales data before showing confirmation
-      await cartProvider.saveSalesData();
+      if (authProvider.user != null) {
+        await cartProvider.saveSalesData(authProvider.user!.uid);
+      }
       
-      // Show success dialog
       showDialog(
         context: context,
         barrierDismissible: false,
@@ -217,7 +219,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Order Summary Card
                   Card(
                     color: const Color.fromARGB(255, 37, 53, 76),
                     shape: RoundedRectangleBorder(
@@ -286,7 +287,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ],
                           ),
                           SizedBox(height: 8.h),
-                          // Tax
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -413,7 +413,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   SizedBox(height: 16.h),
 
-                  // Address Field
                   TextFormField(
                     controller: _addressController,
                     validator: _validateAddress,
@@ -435,7 +434,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   SizedBox(height: 20.h),
 
-                  // Confirm Order Button
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(

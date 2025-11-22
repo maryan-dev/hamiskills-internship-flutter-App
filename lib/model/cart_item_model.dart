@@ -20,7 +20,6 @@ class CartItem {
     };
   }
 
-  // Create from Map
   static CartItem? fromJson(Map<String, dynamic> json, List<Product> products) {
     final product = products.firstWhere(
       (p) => p.id == json['productId'],

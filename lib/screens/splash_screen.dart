@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import 'MainWrapper.dart';
+import 'login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,10 +18,21 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      const Duration(seconds: 6),
-      () => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainWrapper()),
-      ),
+      const Duration(seconds: 3),
+      () {
+        if (mounted) {
+          final authProvider = Provider.of<AuthProvider>(context, listen: false);
+          if (authProvider.isAuthenticated) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const MainWrapper()),
+            );
+          } else {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const LoginScreen()),
+            );
+          }
+        }
+      },
     );
   }
 

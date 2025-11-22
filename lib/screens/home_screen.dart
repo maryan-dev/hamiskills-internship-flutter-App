@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/product_provider.dart';
 import '../model/product_model.dart';
 import '../utils/responsive_helper.dart';
+import '../l10n/app_localizations.dart';
 import 'cart_screen.dart';
 import 'product_list_screen.dart';
 import 'product_details_screen.dart';
@@ -22,6 +24,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: const Color(0XFF0a032c),
       appBar: AppBar(
@@ -29,7 +32,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         title: Center(
           child: Text(
-            'Hami MiniMarket',
+            localization.appTitle,
             style: TextStyle(
               color: Colors.white,
               fontSize: 25.sp,
@@ -80,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 24.h),
               Text(
-                'Welcome!',
+                localization.welcome,
                 style: TextStyle(
                       fontSize: 36.sp,
                   color: Colors.white,
@@ -89,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 12.h),
                   Text(
-                    'Fresh fruits and vegetables',
+                    localization.tagline,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18.sp,
@@ -99,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 8.h),
                   Text(
-                    'Your one-stop community shop',
+                    localization.subtitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 14.sp,
@@ -216,7 +219,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Featured Products',
+                  localization.featuredProducts,
                     style: TextStyle(
                       fontSize: 22.sp,
                       color: Colors.white,
@@ -235,7 +238,7 @@ class HomeScreen extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      'See All',
+                    localization.seeAll,
                       style: TextStyle(
                         fontSize: 16.sp,
                         color: Colors.green,
@@ -249,16 +252,114 @@ class HomeScreen extends StatelessWidget {
 
             SizedBox(
               height: 220.h,
-              child: ListView.builder(
+              child: Consumer<ProductProvider>(
+                builder: (context, productProvider, child) {
+                  if (productProvider.isLoading) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            color: Colors.green,
+                          ),
+                          SizedBox(height: 16.h),
+                          Text(
+                            localization.loadingProducts,
+                            style: TextStyle(color: Colors.white70, fontSize: 14.sp),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  if (productProvider.errorMessage != null) {
+                    return Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(20.w),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 48.sp,
+                            ),
+                            SizedBox(height: 12.h),
+                            Text(
+                              productProvider.errorMessage!,
+                              style: TextStyle(color: Colors.white70, fontSize: 14.sp),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 16.h),
+                            ElevatedButton.icon(
+                              onPressed: () => productProvider.loadProducts(),
+                              icon: Icon(Icons.refresh, size: 20.sp),
+                            label: Text(localization.retry),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  if (productProvider.products.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.inventory_2_outlined,
+                            color: Colors.white30,
+                            size: 48.sp,
+                          ),
+                          SizedBox(height: 12.h),
+                          Text(
+                            localization.noProducts,
+                            style: TextStyle(color: Colors.white70, fontSize: 16.sp),
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            localization.addProducts,
+                            style: TextStyle(color: Colors.white54, fontSize: 12.sp),
+                          ),
+                          SizedBox(height: 16.h),
+                          ElevatedButton.icon(
+                            onPressed: () => productProvider.loadProducts(),
+                            icon: Icon(Icons.refresh, size: 20.sp),
+                            label: Text(localization.refresh),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                              foregroundColor: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  // Remove duplicates
+                  final uniqueProducts = <String, Product>{};
+                  for (var product in productProvider.products) {
+                    if (!uniqueProducts.containsKey(product.id) && product.price > 0) {
+                      uniqueProducts[product.id] = product;
+                    }
+                  }
+                  final deduplicatedProducts = uniqueProducts.values.toList();
+                  final featuredProducts = deduplicatedProducts.take(6).toList();
+                  
+                  return ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
-                itemCount: dummyProducts.take(6).length,
+                    itemCount: featuredProducts.length,
                 itemBuilder: (context, index) {
-                  final product = dummyProducts[index];
+                      final product = featuredProducts[index];
                   return Container(
                     width: 160.w,
                     margin: EdgeInsets.only(right: 16.w),
                     child: _buildFeaturedProductCard(context, product),
+                      );
+                    },
                   );
                 },
               ),
@@ -301,7 +402,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Special Offer!',
+                            localization.specialOffer,
                             style: TextStyle(
                               fontSize: 18.sp,
                               color: Colors.white,
@@ -310,7 +411,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 4.h),
                           Text(
-                            'Get 10% off on orders above \$50',
+                            localization.specialOfferDescription,
                             style: TextStyle(
                               fontSize: 14.sp,
                               color: Colors.white70,

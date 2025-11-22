@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../model/product_model.dart';
+import '../providers/product_provider.dart';
 import '../utils/responsive_helper.dart';
 import '../providers/cart_provider.dart';
 import 'cart_screen.dart';
@@ -17,28 +18,47 @@ class ProductListScreen extends StatefulWidget {
 
 class _ProductListScreenState extends State<ProductListScreen> {
   final TextEditingController _searchController = TextEditingController();
-  List<Product> _filteredProducts = dummyProducts;
+  List<Product> _filteredProducts = [];
 
   @override
   void initState() {
     super.initState();
-    _searchController.addListener(_filterProducts);
+    _searchController.addListener(() {
+      final productProvider = Provider.of<ProductProvider>(context, listen: false);
+      _filterProducts(productProvider.products);
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateFilteredProducts();
+    });
   }
 
   @override
   void dispose() {
-    _searchController.removeListener(_filterProducts);
     _searchController.dispose();
     super.dispose();
   }
 
-  void _filterProducts() {
+  void _updateFilteredProducts() {
+    final productProvider = Provider.of<ProductProvider>(context, listen: false);
+    _filterProducts(productProvider.products);
+  }
+
+  void _filterProducts(List<Product> products) {
+    // Remove duplicates based on product ID
+    final uniqueProducts = <String, Product>{};
+    for (var product in products) {
+      if (!uniqueProducts.containsKey(product.id)) {
+        uniqueProducts[product.id] = product;
+      }
+    }
+    final deduplicatedProducts = uniqueProducts.values.toList();
+    
     final query = _searchController.text.toLowerCase();
     setState(() {
       if (query.isEmpty) {
-        _filteredProducts = dummyProducts;
+        _filteredProducts = deduplicatedProducts;
       } else {
-        _filteredProducts = dummyProducts
+        _filteredProducts = deduplicatedProducts
             .where((product) =>
                 product.name.toLowerCase().contains(query))
             .toList();
@@ -77,7 +97,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 padding: EdgeInsets.all(16.w),
                 child: TextField(
                   controller: _searchController,
-                  onChanged: (value) => setState(() {}),
+                  onChanged: (value) {
+                    final productProvider = Provider.of<ProductProvider>(context, listen: false);
+                    _filterProducts(productProvider.products);
+                  },
                   style: TextStyle(color: Colors.white, fontSize: 16.sp),
                   decoration: InputDecoration(
                     hintText: 'Search products...',
@@ -88,7 +111,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             icon: Icon(Icons.clear, color: Colors.white70, size: 20.sp),
                             onPressed: () {
                               _searchController.clear();
-                              setState(() {});
+                              final productProvider = Provider.of<ProductProvider>(context, listen: false);
+                              _filterProducts(productProvider.products);
                             },
                           )
                         : null,
@@ -103,8 +127,75 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ),
               ),
               Expanded(
-                child: _filteredProducts.isEmpty
-                    ? Center(
+                child: Consumer<ProductProvider>(
+                  builder: (context, productProvider, child) {
+                    // Remove duplicates from products based on ID
+                    final uniqueProducts = <String, Product>{};
+                    for (var product in productProvider.products) {
+                      if (!uniqueProducts.containsKey(product.id)) {
+                        uniqueProducts[product.id] = product;
+                      }
+                    }
+                    final deduplicatedProducts = uniqueProducts.values.toList();
+                    
+                    // Filter products based on search query
+                    final query = _searchController.text.toLowerCase();
+                    final filteredProducts = query.isEmpty
+                        ? deduplicatedProducts
+                        : deduplicatedProducts
+                            .where((product) =>
+                                product.name.toLowerCase().contains(query))
+                            .toList();
+                    
+                    // Update state if needed
+                    if (filteredProducts.length != _filteredProducts.length ||
+                        !filteredProducts.every((p) => _filteredProducts.any((fp) => fp.id == p.id))) {
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (mounted) {
+                          setState(() {
+                            _filteredProducts = filteredProducts;
+                          });
+                        }
+                      });
+                    }
+                    
+                    if (productProvider.isLoading && filteredProducts.isEmpty) {
+                      return Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.green,
+                        ),
+                      );
+                    }
+                    if (productProvider.errorMessage != null && filteredProducts.isEmpty) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.error_outline,
+                              size: 64.sp,
+                              color: Colors.red,
+                            ),
+                            SizedBox(height: 16.h),
+                            Text(
+                              productProvider.errorMessage!,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.white70,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(height: 16.h),
+                            ElevatedButton(
+                              onPressed: () => productProvider.loadProducts(),
+                              child: Text('Retry'),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    if (filteredProducts.isEmpty) {
+                      return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -131,8 +222,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                             ),
                           ],
                         ),
-                      )
-                    : GridView.builder(
+                      );
+                    }
+                    return RefreshIndicator(
+                      onRefresh: () async {
+                        await productProvider.loadProducts(forceRefresh: true);
+                        _updateFilteredProducts();
+                      },
+                      color: Colors.green,
+                      child: GridView.builder(
             padding: ResponsiveHelper.getScreenPadding(context),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: ResponsiveHelper.getGridCrossAxisCount(context),
@@ -140,9 +238,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
               mainAxisSpacing: 16.h,
               childAspectRatio: ResponsiveHelper.getGridChildAspectRatio(context),
             ),
-                        itemCount: _filteredProducts.length,
+                        itemCount: filteredProducts.length,
             itemBuilder: (context, index) {
-                          final product = _filteredProducts[index];
+                          final product = filteredProducts[index];
               return GestureDetector(
                 onTap: () => widget.onProductTap(product),
                 child: Card(
@@ -200,12 +298,20 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 ),
               );
             },
+              )
+                    );
+            },
                       ),
-              ),
-            ],
-          ),
+                    ),
+            ]
+                      ),
+                      
         ),
-      ),
+              ),
+            
+          
+        
+      
     );
   }
 }

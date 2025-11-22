@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
+import '../providers/product_provider.dart';
+import '../providers/auth_provider.dart';
 import '../model/product_model.dart';
 import '../utils/responsive_helper.dart';
 import 'product_details_screen.dart';
@@ -26,16 +28,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> _loadDashboardData() async {
     final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    
+    if (authProvider.user == null) {
+      setState(() {
+        _isLoading = false;
+        _totalSales = 0.0;
+        _mostAddedItems = [];
+      });
+      return;
+    }
     
     setState(() {
       _isLoading = true;
     });
 
-    final sales = await cartProvider.getTotalSales();
+    final userId = authProvider.user!.uid;
+    final sales = await cartProvider.getTotalSales(userId);
+    final productProvider = Provider.of<ProductProvider>(context, listen: false);
     
     final List<Map<String, dynamic>> productCounts = [];
-    for (var product in dummyProducts) {
-      final count = await cartProvider.getProductCount(product.id);
+    for (var product in productProvider.products) {
+      final count = await cartProvider.getProductCount(userId, product.id);
       if (count > 0) {
         productCounts.add({
           'product': product,
