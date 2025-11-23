@@ -49,8 +49,7 @@ class FirebaseService {
           final price = _parsePrice(data['price']);
           if (price <= 0) {
             print('Warning: Product ${data['name']} (ID: $productId) has invalid price: ${data['price']} (type: ${data['price'].runtimeType})');
-            // Skip products with invalid prices or use a default
-            // For now, we'll skip them to avoid showing $0.00
+        
             continue;
           }
           
