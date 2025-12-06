@@ -8,6 +8,15 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 ✨ Features
 📱 Splash Screen: App loading screen with the Hami MiniMarket logo. 🏠 Home Screen: A welcoming landing page with a welcome message. 🍎 Product List: Displays all available fruits and vegetables with their name, price, and image. ℹ️ Product Details: A detailed view for each product, showing a description and an "Add to Cart" button. 🛒 Shopping Cart: A functional cart that lists selected items and calculates the total price. 🧭 Bottom Navigation: (Bonus) Easy navigation between Home, Products, and Cart screens. ⚙️ State Management: (Bonus) Uses setState to dynamically update the cart in real-time.
 
+## Video
+|  Video App|
+|--------|
+| https://github.com/user-attachments/assets/5caa963a-0e16-4066-bcd0-7e4d6b37f069|
+
+
+
+
+
 
 ## 📱 Screenshots
 | Splash | Home | Products |
