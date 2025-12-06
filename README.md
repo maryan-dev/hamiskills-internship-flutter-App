@@ -40,6 +40,7 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 |-----------------------|
 | <img width="250" src="https://github.com/user-attachments/assets/3fa89f58-fa70-402b-831b-b6a636602212" /> |
 
+
 ## 💻 Tech Stack
 
 - **Framework:** Flutter  
