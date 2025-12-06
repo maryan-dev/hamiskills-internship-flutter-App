@@ -44,10 +44,12 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
               create: (context) => LocaleProvider(),
             ),
-            ProxyProvider2<AuthProvider, ProductProvider, CartProvider>(
-              update: (context, authProvider, productProvider, previous) {
+            ChangeNotifierProxyProvider<AuthProvider, CartProvider>(
+              create: (context) => CartProvider(),
+              update: (context, authProvider, previous) {
                 final cartProvider = previous ?? CartProvider();
                 final userId = authProvider.user?.uid;
+                final productProvider = Provider.of<ProductProvider>(context, listen: false);
                 cartProvider.setUser(userId, context);
                 return cartProvider;
               },

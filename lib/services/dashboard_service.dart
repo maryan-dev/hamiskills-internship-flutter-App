@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DashboardService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Save total sales for a user
   Future<void> saveTotalSales(String userId, double amount) async {
     try {
       final dashboardRef = _firestore
@@ -22,7 +21,6 @@ class DashboardService {
     }
   }
 
-  // Get total sales for a user
   Future<double> getTotalSales(String userId) async {
     try {
       final dashboardRef = _firestore
@@ -43,7 +41,6 @@ class DashboardService {
     }
   }
 
-  // Save product count for a user
   Future<void> saveProductCount(String userId, String productId, int quantity) async {
     try {
       final productRef = _firestore
@@ -64,7 +61,6 @@ class DashboardService {
     }
   }
 
-  // Get product count for a user
   Future<int> getProductCount(String userId, String productId) async {
     try {
       final productRef = _firestore
@@ -87,7 +83,6 @@ class DashboardService {
     }
   }
 
-  // Get all product counts for a user
   Future<Map<String, int>> getAllProductCounts(String userId) async {
     try {
       final countsRef = _firestore

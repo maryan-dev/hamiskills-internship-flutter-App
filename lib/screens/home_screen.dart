@@ -114,105 +114,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
-            //   child: Consumer<CartProvider>(
-            //     builder: (context, cart, child) => Row(
-            //       children: [
-            //         Expanded(
-            //           child: _buildStatCard(
-            //             context,
-            //             icon: Icons.shopping_bag,
-            //             title: 'Products',
-            //             value: '${dummyProducts.length}',
-            //             color: Colors.blue,
-            //           ),
-            //         ),
-            //         SizedBox(width: 12.w),
-            //         Expanded(
-            //           child: _buildStatCard(
-            //             context,
-            //             icon: Icons.shopping_cart,
-            //             title: 'In Cart',
-            //             value: '${cart.totalItems}',
-            //             color: Colors.green,
-            //           ),
-            //         ),
-            //         SizedBox(width: 12.w),
-            //         Expanded(
-            //           child: _buildStatCard(
-            //             context,
-            //             icon: Icons.attach_money,
-            //             title: 'Total',
-            //             value: '\$${cart.totalAmount.toStringAsFixed(0)}',
-            //             color: Colors.orange,
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-
-            // Padding(
-            //   padding: EdgeInsets.symmetric(horizontal: 20.w),
-            //   child: Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: [
-            //       Text(
-            //         'Quick Actions',
-            //         style: TextStyle(
-            //           fontSize: 22.sp,
-            //           color: Colors.white,
-            //           fontWeight: FontWeight.bold,
-            //         ),
-            //       ),
-            //       SizedBox(height: 16.h),
-            //       Row(
-            //         children: [
-            //           Expanded(
-            //             child: _buildQuickActionCard(
-            //               context,
-            //               icon: Icons.list_alt,
-            //               title: 'Browse Products',
-            //               subtitle: 'View all items',
-            //               color: Colors.blue,
-            //               onTap: () {
-            //                 Navigator.push(
-            //                   context,
-            //                   MaterialPageRoute(
-            //                     builder: (context) => ProductListScreen(
-            //                       onProductTap: (product) => _navigateToProductDetails(context, product),
-            //                     ),
-            //                   ),
-            //                 );
-            //               },
-            //             ),
-            //           ),
-            //           SizedBox(width: 12.w),
-            //           Expanded(
-            //             child: _buildQuickActionCard(
-            //               context,
-            //               icon: Icons.shopping_cart_outlined,
-            //               title: 'My Cart',
-            //               subtitle: 'View cart',
-            //               color: Colors.green,
-            //               onTap: () {
-            //                 Navigator.push(
-            //                   context,
-            //                   MaterialPageRoute(
-            //                     builder: (context) => const CartScreen(),
-            //                   ),
-            //                 );
-            //               },
-            //             ),
-            //           ),
-            //         ],
-            //       ),
-            //       SizedBox(height: 16.h),
-            //     ],
-            //   ),
-            // ),
-
               Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
               child: Row(
@@ -338,7 +239,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                     );
                   }
-                  // Remove duplicates
                   final uniqueProducts = <String, Product>{};
                   for (var product in productProvider.products) {
                     if (!uniqueProducts.containsKey(product.id) && product.price > 0) {

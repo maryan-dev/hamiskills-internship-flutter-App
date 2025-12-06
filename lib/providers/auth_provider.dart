@@ -13,6 +13,8 @@ class AuthProvider with ChangeNotifier {
   bool get isAuthenticated => _user != null;
 
   AuthProvider() {
+    _user = _auth.currentUser;
+    
     _auth.authStateChanges().listen((User? user) {
       _user = user;
       notifyListeners();
@@ -32,9 +34,8 @@ class AuthProvider with ChangeNotifier {
 
       if (userCredential.user != null) {
         await userCredential.user!.updateDisplayName(name);
-        // Reload user to get updated displayName
         await userCredential.user!.reload();
-        _user = _auth.currentUser; // Get the updated user
+        _user = _auth.currentUser;
         _isLoading = false;
         notifyListeners();
         return true;
@@ -64,10 +65,9 @@ class AuthProvider with ChangeNotifier {
         password: password,
       );
 
-      // Reload user to get latest information including displayName
       if (userCredential.user != null) {
         await userCredential.user!.reload();
-        _user = _auth.currentUser; // Get the updated user
+        _user = _auth.currentUser;
       } else {
         _user = userCredential.user;
       }

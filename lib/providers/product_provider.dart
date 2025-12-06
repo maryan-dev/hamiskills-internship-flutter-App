@@ -24,7 +24,6 @@ class ProductProvider with ChangeNotifier {
 
       print('ProductProvider: Loading products... (forceRefresh: $forceRefresh)');
       
-      // Clear cache if force refresh
       if (forceRefresh) {
         await _firebaseService.clearCache();
       }
@@ -32,7 +31,6 @@ class ProductProvider with ChangeNotifier {
       final fetchedProducts = await _firebaseService.getProducts();
       print('ProductProvider: Loaded ${fetchedProducts.length} products');
       
-      // Remove any duplicates that might have slipped through
       final uniqueProducts = <String, Product>{};
       for (var product in fetchedProducts) {
         if (!uniqueProducts.containsKey(product.id)) {

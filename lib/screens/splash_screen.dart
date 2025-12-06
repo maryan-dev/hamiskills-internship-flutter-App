@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../providers/auth_provider.dart';
 import 'MainWrapper.dart';
 import 'login_screen.dart';
@@ -17,23 +18,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(
-      const Duration(seconds: 3),
-      () {
-        if (mounted) {
-          final authProvider = Provider.of<AuthProvider>(context, listen: false);
-          if (authProvider.isAuthenticated) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const MainWrapper()),
-            );
-          } else {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-            );
-          }
-        }
-      },
-    );
+    _checkAuthAndNavigate();
+  }
+
+  Future<void> _checkAuthAndNavigate() async {
+    await Future.delayed(const Duration(seconds: 2));
+    
+    if (!mounted) return;
+    
+    final authStream = FirebaseAuth.instance.authStateChanges();
+    final firstAuthState = await authStream.first;
+    
+    if (!mounted) return;
+    
+    if (firstAuthState != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainWrapper()),
+      );
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    }
   }
 
   @override

@@ -4,23 +4,18 @@ import '../model/product_model.dart';
 class FirebaseService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Clear Firestore cache (if needed)
   Future<void> clearCache() async {
     try {
-      // Note: clearPersistence() requires disabling network first
-      // For now, we'll just force server fetch which is already done
       print('Cache will be bypassed by using Source.server');
     } catch (e) {
       print('Error with cache: $e');
     }
   }
 
-  // Fetch all products from Firestore
   Future<List<Product>> getProducts() async {
     try {
       print('Fetching products from Firestore...');
       
-      // Force fetch from server to avoid stale cache with duplicates
       final QuerySnapshot snapshot = await _firestore
           .collection('products')
           .get(const GetOptions(source: Source.server));
@@ -32,7 +27,6 @@ class FirebaseService {
         return [];
       }
 
-      // Remove duplicates based on product ID
       final uniqueProducts = <String, Product>{};
       
       for (var doc in snapshot.docs) {
@@ -40,7 +34,6 @@ class FirebaseService {
           final data = doc.data() as Map<String, dynamic>;
           final productId = data['id']?.toString() ?? doc.id;
           
-          // Skip if we already have this product ID
           if (uniqueProducts.containsKey(productId)) {
             print('Duplicate product ID found: $productId, skipping...');
             continue;
@@ -71,7 +64,6 @@ class FirebaseService {
       final products = uniqueProducts.values.toList();
       print('Successfully parsed ${products.length} unique products from ${snapshot.docs.length} documents');
 
-      // Sort products by id (numerically)
       products.sort((a, b) {
         final idA = int.tryParse(a.id) ?? 0;
         final idB = int.tryParse(b.id) ?? 0;
@@ -99,7 +91,6 @@ class FirebaseService {
         .collection('products')
         .snapshots()
         .map((snapshot) {
-      // Remove duplicates based on product ID
       final uniqueProducts = <String, Product>{};
       
       for (var doc in snapshot.docs) {
@@ -107,13 +98,11 @@ class FirebaseService {
           final data = doc.data() as Map<String, dynamic>;
           final productId = data['id']?.toString() ?? doc.id;
           
-          // Skip if we already have this product ID
           if (uniqueProducts.containsKey(productId)) {
             continue;
           }
           
           final price = _parsePrice(data['price']);
-          // Skip products with invalid prices
           if (price <= 0) {
             continue;
           }
@@ -134,7 +123,6 @@ class FirebaseService {
 
       final products = uniqueProducts.values.toList();
 
-      // Sort products by id (numerically)
       products.sort((a, b) {
         final idA = int.tryParse(a.id) ?? 0;
         final idB = int.tryParse(b.id) ?? 0;
@@ -145,7 +133,6 @@ class FirebaseService {
     });
   }
 
-  // Helper method to parse price (handles both string and double)
   double _parsePrice(dynamic price) {
     if (price is double) {
       return price;

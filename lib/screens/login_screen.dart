@@ -86,7 +86,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 40.h),
-                  // Logo
                   Container(
                     width: 120.w,
                     height: 120.w,
@@ -125,7 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 40.h),
 
-                  // Email Field
                   TextFormField(
                     controller: _emailController,
                     validator: _validateEmail,
@@ -146,7 +144,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 20.h),
 
-                  // Password Field
                   TextFormField(
                     controller: _passwordController,
                     validator: _validatePassword,
@@ -179,7 +176,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 30.h),
 
-                  // Login Button
                   Consumer<AuthProvider>(
                     builder: (context, auth, child) {
                       return ElevatedButton(
@@ -213,7 +209,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 20.h),
 
-                  // Sign Up Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

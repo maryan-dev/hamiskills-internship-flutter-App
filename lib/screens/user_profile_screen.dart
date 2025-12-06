@@ -150,7 +150,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Future<void> _pickImage() async {
-    // Show option to pick from gallery or camera
     if (!mounted) return;
     
     final source = await showModalBottomSheet<ImageSource>(
@@ -181,7 +180,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
     if (source == null || !mounted) return;
 
-    // Request appropriate permission based on source
     final hasPermission = source == ImageSource.camera
         ? await _ensureCameraPermission()
         : await _ensureGalleryPermission();
@@ -203,9 +201,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       if (Platform.isIOS) {
         permission = Permission.photos;
       } else {
-        // For Android 13+ (API 33+), Permission.photos maps to READ_MEDIA_IMAGES
-        // For older versions, it should still work but may need storage permission
-        // The permission_handler package handles this automatically
         permission = Permission.photos;
       }
 
@@ -219,7 +214,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         return true;
       }
 
-      // If photos permission is denied, try storage permission for older Android
       if (Platform.isAndroid && !status.isGranted) {
         final storagePermission = Permission.storage;
         final storageStatus = await storagePermission.status;
@@ -250,12 +244,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
       return false;
     } catch (e) {
-      // If permission handling fails, try to proceed anyway
-      // image_picker might handle permissions internally
       if (mounted) {
         debugPrint('Permission error: $e');
       }
-      return true; // Allow image_picker to handle permissions
+      return true;
     }
   }
 
@@ -385,7 +377,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Future<void> _handleLogout() async {
-    // Show confirmation dialog
     final shouldLogout = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -448,16 +439,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       },
     );
 
-    // If user cancelled, do nothing
     if (shouldLogout != true || !mounted) return;
 
-    // Proceed with logout
     final authProvider = context.read<AuthProvider>();
     final cartProvider = context.read<CartProvider>();
     final navigator = Navigator.of(context);
     final messenger = ScaffoldMessenger.of(context);
     try {
-      // Clear cart before signing out
       await cartProvider.clearUserCart();
       await authProvider.signOut();
       if (!mounted) return;

@@ -32,9 +32,9 @@ class ResponsiveHelper {
 
   static int getGridCrossAxisCount(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    if (width >= 1024) return 4; 
-    if (width >= 600) return 3;  
-    return 2; 
+    if (width >= 1024) return 4; // Desktop
+    if (width >= 600) return 3;  // Tablet
+    return 2; // Mobile
   }
 
   static double getGridChildAspectRatio(BuildContext context) {

@@ -11,8 +11,6 @@ class CartItem {
 
   double get totalPrice => product.price * quantity;
 
-  // Convert to Map for SharedPreferences
-
   Map<String, dynamic> toJson() {
     return {
       'productId': product.id,

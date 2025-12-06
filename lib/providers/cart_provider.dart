@@ -50,7 +50,6 @@ class CartProvider with ChangeNotifier {
 
   void addItem(Product product) {
     if (_currentUserId == null) {
-      // Don't add items if no user is logged in
       return;
     }
     
@@ -66,14 +65,12 @@ class CartProvider with ChangeNotifier {
     _saveCart();
   }
 
-  // Remove item from cart
   void removeItem(String productId) {
     _items.removeWhere((item) => item.product.id == productId);
     notifyListeners();
     _saveCart();
   }
 
-  // Increase quantity
   void increaseQuantity(String productId) {
     final index = _items.indexWhere((item) => item.product.id == productId);
     if (index >= 0) {
@@ -83,7 +80,6 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  // Decrease quantity
   void decreaseQuantity(String productId) {
     final index = _items.indexWhere((item) => item.product.id == productId);
     if (index >= 0) {
@@ -97,20 +93,15 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  // Clear all items (this method is now overridden below)
-
-  // Save cart to SharedPreferences with user-specific key
   Future<void> _saveCart() async {
-    if (_currentUserId == null) return; // Don't save if no user is logged in
+    if (_currentUserId == null) return;
     final prefs = await SharedPreferences.getInstance();
     final cartData = _items.map((item) => item.toJson()).toList();
     final cartKey = 'cart_$_currentUserId';
     await prefs.setString(cartKey, json.encode(cartData));
   }
 
-  // Set current user and load their cart
   Future<void> setUser(String? userId, BuildContext? context) async {
-    // Clear current cart when switching users
     if (_currentUserId != null && _currentUserId != userId) {
       _items.clear();
       notifyListeners();
@@ -121,13 +112,11 @@ class CartProvider with ChangeNotifier {
     if (userId != null && context != null) {
       await loadCart(context);
     } else {
-      // Clear cart if no user is logged in
       _items.clear();
       notifyListeners();
     }
   }
 
-  // Load cart from SharedPreferences with user-specific key
   Future<void> loadCart(BuildContext? context) async {
     if (_currentUserId == null) {
       _items.clear();
@@ -143,25 +132,21 @@ class CartProvider with ChangeNotifier {
       final List<dynamic> cartData = json.decode(cartString);
       List<Product> products = [];
       
-      // Try to get products from ProductProvider if context is available
       if (context != null) {
         try {
           final productProvider = Provider.of<ProductProvider>(context, listen: false);
           products = productProvider.products;
         } catch (e) {
-          // If provider not available, use empty list
           products = [];
         }
       }
       
-      // If products list is empty, try to load from ProductProvider
       if (products.isEmpty && context != null) {
         try {
           final productProvider = Provider.of<ProductProvider>(context, listen: false);
           await productProvider.loadProducts();
           products = productProvider.products;
         } catch (e) {
-          // If still empty, return empty cart
           _items.clear();
           notifyListeners();
           return;
@@ -174,25 +159,20 @@ class CartProvider with ChangeNotifier {
           .toList();
       notifyListeners();
     } else {
-      // No cart data for this user, start with empty cart
       _items.clear();
       notifyListeners();
     }
   }
 
-  // Track sales data for dashboard (call this when order is confirmed)
   Future<void> saveSalesData(String userId) async {
     try {
-      // Save to Firestore
       await _dashboardService.saveTotalSales(userId, totalAmount);
       
-      // Track most added items in Firestore
       for (var item in _items) {
         await _dashboardService.saveProductCount(userId, item.product.id, item.quantity);
       }
     } catch (e) {
       print('Error saving sales data to Firestore: $e');
-      // Fallback to SharedPreferences if Firestore fails
       final prefs = await SharedPreferences.getInstance();
       final currentSales = prefs.getDouble('total_sales') ?? 0.0;
       await prefs.setDouble('total_sales', currentSales + totalAmount);
@@ -205,31 +185,26 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  // Get total sales from Firestore
   Future<double> getTotalSales(String userId) async {
     try {
       return await _dashboardService.getTotalSales(userId);
     } catch (e) {
       print('Error getting total sales from Firestore: $e');
-      // Fallback to SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       return prefs.getDouble('total_sales') ?? 0.0;
     }
   }
 
-  // Get product count from Firestore
   Future<int> getProductCount(String userId, String productId) async {
     try {
       return await _dashboardService.getProductCount(userId, productId);
     } catch (e) {
       print('Error getting product count from Firestore: $e');
-      // Fallback to SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       return prefs.getInt('product_${productId}_count') ?? 0;
     }
   }
 
-  // Clear sales data (for testing/reset)
   Future<void> clearSalesData() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('total_sales');
@@ -241,14 +216,12 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  // Clear all items
   void clearCart() {
     _items.clear();
     notifyListeners();
     _saveCart();
   }
 
-  // Clear cart for current user (used on logout)
   Future<void> clearUserCart() async {
     _items.clear();
     _currentUserId = null;

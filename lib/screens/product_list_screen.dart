@@ -44,7 +44,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
   }
 
   void _filterProducts(List<Product> products) {
-    // Remove duplicates based on product ID
     final uniqueProducts = <String, Product>{};
     for (var product in products) {
       if (!uniqueProducts.containsKey(product.id)) {
@@ -129,7 +128,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
               Expanded(
                 child: Consumer<ProductProvider>(
                   builder: (context, productProvider, child) {
-                    // Remove duplicates from products based on ID
                     final uniqueProducts = <String, Product>{};
                     for (var product in productProvider.products) {
                       if (!uniqueProducts.containsKey(product.id)) {
@@ -138,7 +136,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     }
                     final deduplicatedProducts = uniqueProducts.values.toList();
                     
-                    // Filter products based on search query
                     final query = _searchController.text.toLowerCase();
                     final filteredProducts = query.isEmpty
                         ? deduplicatedProducts
@@ -147,7 +144,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 product.name.toLowerCase().contains(query))
                             .toList();
                     
-                    // Update state if needed
                     if (filteredProducts.length != _filteredProducts.length ||
                         !filteredProducts.every((p) => _filteredProducts.any((fp) => fp.id == p.id))) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {

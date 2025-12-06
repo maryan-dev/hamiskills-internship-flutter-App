@@ -73,7 +73,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => AlertDialog(
+                builder: (context) => AlertDialog(
           backgroundColor: const Color.fromARGB(255, 37, 53, 76),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.r),
@@ -109,7 +109,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           actions: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Close dialog
+                Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -238,7 +238,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ),
                           ),
                           SizedBox(height: 15.h),
-                          // Itemized List
                           ...cartProvider.items.map((item) => Padding(
                             padding: EdgeInsets.only(bottom: 8.h),
                             child: Row(
@@ -265,7 +264,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             ),
                           )),
                           Divider(color: Colors.white30, height: 20.h),
-                          // Subtotal
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -307,7 +305,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                               ),
                             ],
                           ),
-                          // Discount (if applicable)
                           if (cartProvider.discount > 0) ...[
                             SizedBox(height: 8.h),
                             Row(
@@ -334,7 +331,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           ],
                           SizedBox(height: 10.h),
                           Divider(color: Colors.white30, height: 20.h),
-                          // Final Total
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -372,7 +368,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   SizedBox(height: 10.h),
 
-                  // Name Field
                   TextFormField(
                     controller: _nameController,
                     validator: _validateName,
@@ -392,7 +387,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                   SizedBox(height: 16.h),
 
-                  // Phone Field
                   TextFormField(
                     controller: _phoneController,
                     validator: _validatePhone,
