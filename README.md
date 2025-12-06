@@ -11,7 +11,7 @@ Hami MiniMarket is a mobile app prototype for a community shop specializing in f
 ## Video
 |  Video App|
 |--------|
-| https://github.com/user-attachments/assets/5caa963a-0e16-4066-bcd0-7e4d6b37f069|
+|[![Video Preview](screenshot.png)](https://github.com/user-attachments/assets/5caa963a-0e16-4066-bcd0-7e4d6b37f069)|
 
 
 
